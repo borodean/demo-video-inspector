@@ -18,29 +18,21 @@ function Player({
       onBufferingChange(event.buffering);
     };
 
-    player.addEventListener('buffering', handleBufferingChange);
-
-    return () => {
-      player.removeEventListener('buffering', handleBufferingChange);
-    };
-  }, [onBufferingChange]);
-
-  useEffect(() => {
-    const {player} = controllerRef.current;
-
     const handleVariantChange = () => {
       const stats = player.getStats();
       onStreamBandwidthChange(stats.streamBandwidth);
     };
 
+    player.addEventListener('buffering', handleBufferingChange);
     player.addEventListener('adaptation', handleVariantChange);
     player.addEventListener('variantchanged', handleVariantChange);
 
     return () => {
+      player.removeEventListener('buffering', handleBufferingChange);
       player.removeEventListener('adaptation', handleVariantChange);
       player.removeEventListener('variantchanged', handleVariantChange);
     };
-  }, [onStreamBandwidthChange]);
+  }, [onBufferingChange, onStreamBandwidthChange]);
 
   useDriftlessInterval(() => {
     const stats = controllerRef.current.player.getStats();
