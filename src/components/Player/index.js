@@ -4,6 +4,8 @@ import ShakaPlayer from 'shaka-player-react';
 
 import useDriftlessInterval from '../../hooks/useDriftlessInterval';
 
+const DIMENSIONS = {width: 400, height: 320};
+
 function Player({
   onBufferingChange = noop,
   onEstimatedBandwidthChange = noop,
@@ -51,11 +53,14 @@ function Player({
   }, 1000);
 
   return (
-    <ShakaPlayer
-      autoPlay
-      src="https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd"
-      ref={controllerRef}
-    />
+    <div style={DIMENSIONS}>
+      <ShakaPlayer
+        autoPlay
+        src="https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd"
+        ref={controllerRef}
+        {...DIMENSIONS}
+      />
+    </div>
   );
 }
 
