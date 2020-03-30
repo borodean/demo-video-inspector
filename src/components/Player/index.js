@@ -3,36 +3,28 @@ import React, {useEffect, useRef} from 'react';
 import ShakaPlayer from 'shaka-player-react';
 
 import useDriftlessInterval from '../../hooks/useDriftlessInterval';
+import Record from '../../models/Record';
 
 const DIMENSIONS = {width: 400, height: 320};
 
-function Player({
-  onBufferingChange = noop,
-  onEstimatedBandwidthChange = noop,
-  onStreamBandwidthChange = noop
-}) {
+function Player({onRecord = noop}) {
   const controllerRef = useRef();
-  const onBufferingChangeRef = useRef();
-  const onStreamBandwidthChangeRef = useRef();
+  const onRecordRef = useRef();
 
   useEffect(() => {
-    onBufferingChangeRef.current = onBufferingChange;
-  }, [onBufferingChange]);
-
-  useEffect(() => {
-    onStreamBandwidthChangeRef.current = onStreamBandwidthChange;
-  }, [onStreamBandwidthChange]);
+    onRecordRef.current = onRecord;
+  }, [onRecord]);
 
   useEffect(() => {
     const {player} = controllerRef.current;
 
     const handleBufferingChange = event => {
-      onBufferingChangeRef.current(event.buffering);
+      onRecordRef.current(new Record('buffer', event.buffering));
     };
 
     const handleVariantChange = () => {
       const stats = player.getStats();
-      onStreamBandwidthChangeRef.current(stats.streamBandwidth);
+      onRecordRef.current(new Record('Q', stats.streamBandwidth));
     };
 
     player.addEventListener('buffering', handleBufferingChange);
@@ -49,7 +41,7 @@ function Player({
   useDriftlessInterval(() => {
     const {player} = controllerRef.current;
     const stats = player.getStats();
-    onEstimatedBandwidthChange(stats.estimatedBandwidth);
+    onRecord(new Record('W', stats.estimatedBandwidth));
   }, 1000);
 
   return (
