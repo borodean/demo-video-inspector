@@ -1,7 +1,8 @@
-import {clearDriftless, setDriftlessInterval} from 'driftless';
 import {noop} from 'lodash';
 import React, {useEffect, useRef} from 'react';
 import ShakaPlayer from 'shaka-player-react';
+
+import useDriftlessInterval from '../../hooks/useDriftlessInterval';
 
 function Player({
   onBufferingChange = noop,
@@ -41,18 +42,10 @@ function Player({
     };
   }, [onStreamBandwidthChange]);
 
-  useEffect(() => {
-    const {player} = controllerRef.current;
-
-    const id = setDriftlessInterval(() => {
-      const stats = player.getStats();
-      onEstimatedBandwidthChange(stats.estimatedBandwidth);
-    }, 1000);
-
-    return () => {
-      clearDriftless(id);
-    };
-  }, [onEstimatedBandwidthChange]);
+  useDriftlessInterval(() => {
+    const stats = controllerRef.current.player.getStats();
+    onEstimatedBandwidthChange(stats.estimatedBandwidth);
+  }, 1000);
 
   return (
     <ShakaPlayer
