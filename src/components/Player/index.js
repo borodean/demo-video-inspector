@@ -10,17 +10,27 @@ function Player({
   onStreamBandwidthChange = noop
 }) {
   const controllerRef = useRef();
+  const onBufferingChangeRef = useRef();
+  const onStreamBandwidthChangeRef = useRef();
+
+  useEffect(() => {
+    onBufferingChangeRef.current = onBufferingChange;
+  }, [onBufferingChange]);
+
+  useEffect(() => {
+    onStreamBandwidthChangeRef.current = onStreamBandwidthChange;
+  }, [onStreamBandwidthChange]);
 
   useEffect(() => {
     const {player} = controllerRef.current;
 
     const handleBufferingChange = event => {
-      onBufferingChange(event.buffering);
+      onBufferingChangeRef.current(event.buffering);
     };
 
     const handleVariantChange = () => {
       const stats = player.getStats();
-      onStreamBandwidthChange(stats.streamBandwidth);
+      onStreamBandwidthChangeRef.current(stats.streamBandwidth);
     };
 
     player.addEventListener('buffering', handleBufferingChange);
@@ -32,10 +42,11 @@ function Player({
       player.removeEventListener('adaptation', handleVariantChange);
       player.removeEventListener('variantchanged', handleVariantChange);
     };
-  }, [onBufferingChange, onStreamBandwidthChange]);
+  }, []);
 
   useDriftlessInterval(() => {
-    const stats = controllerRef.current.player.getStats();
+    const {player} = controllerRef.current;
+    const stats = player.getStats();
     onEstimatedBandwidthChange(stats.estimatedBandwidth);
   }, 1000);
 
