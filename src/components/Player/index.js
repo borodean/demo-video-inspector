@@ -19,7 +19,7 @@ function Player({onRecord = noop}) {
     const {player} = controllerRef.current;
 
     const handleBufferingChange = event => {
-      onRecordRef.current(new Record('buffer', event.buffering));
+      onRecordRef.current(new Record('buffering', event.buffering));
     };
 
     const handleVariantChange = () => {
