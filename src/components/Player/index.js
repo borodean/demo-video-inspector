@@ -23,8 +23,8 @@ function Player({onRecord = noop}) {
     };
 
     const handleVariantChange = () => {
-      const stats = player.getStats();
-      onRecordRef.current(new Record('Q', stats.streamBandwidth));
+      const {streamBandwidth} = player.getStats();
+      onRecordRef.current(new Record('Q', streamBandwidth));
     };
 
     player.addEventListener('buffering', handleBufferingChange);
@@ -40,8 +40,15 @@ function Player({onRecord = noop}) {
 
   useDriftlessInterval(() => {
     const {player} = controllerRef.current;
-    const stats = player.getStats();
-    onRecord(new Record('W', stats.estimatedBandwidth));
+    const bufferedInfo = player.getBufferedInfo();
+    const {estimatedBandwidth} = player.getStats();
+
+    const bufferSize = bufferedInfo.total.reduce((sum, {end, start}) => {
+      return sum + end - start;
+    }, 0);
+
+    onRecord(new Record('B', bufferSize));
+    onRecord(new Record('W', estimatedBandwidth));
   }, 1000);
 
   return (
