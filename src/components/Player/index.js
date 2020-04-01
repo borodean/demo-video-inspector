@@ -35,7 +35,7 @@ function Player({onBuffering, onPoint}) {
 
     onPoint({
       date: new Date(),
-      B: sumRanges(bufferedInfo.total),
+      B: Math.round(sumRanges(bufferedInfo.total)),
       Q: stats.streamBandwidth,
       W: Math.round(stats.estimatedBandwidth)
     });
