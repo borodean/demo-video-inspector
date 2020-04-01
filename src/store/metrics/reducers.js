@@ -1,8 +1,5 @@
-import {
-  ADD_POINT,
-  START_REGION,
-  END_REGION
-} from './actions';
+import {MAX_ENTRIES} from '../../config/constants';
+import {ADD_POINT, START_REGION, END_REGION} from './actions';
 
 export const initialState = {
   regions: [],
@@ -14,12 +11,12 @@ export const metricsReducer = (state = initialState, action) => {
     case ADD_POINT:
       return {
         ...state,
-        points: [...state.points, action.payload].slice(-10)
+        points: [...state.points, action.payload].slice(-MAX_ENTRIES)
       };
     case START_REGION:
       return {
         ...state,
-        regions: [...state.regions, {start: action.date}].slice(-10)
+        regions: [...state.regions, {start: action.date}].slice(-MAX_ENTRIES)
       };
     case END_REGION: {
       const lastRegion = state.regions[state.regions.length - 1];

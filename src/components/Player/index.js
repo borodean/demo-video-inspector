@@ -2,7 +2,11 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
 import ShakaPlayer from 'shaka-player-react';
 
-import {PLAYER_DIMENSIONS, PLAYER_URL} from '../../config/constants';
+import {
+  PLAYER_DIMENSIONS,
+  PLAYER_URL,
+  POLLING_INTERVAL
+} from '../../config/constants';
 import useWorkerInterval from '../../hooks/useWorkerInterval';
 import {sumRanges} from '../../utils/data';
 
@@ -13,7 +17,7 @@ function Player({onBuffering, onPoint}) {
     const {player} = controllerRef.current;
 
     const handleBuffering = event => {
-      onBuffering({ date: new Date(), isBuffering: event.buffering });
+      onBuffering({date: new Date(), isBuffering: event.buffering});
     };
 
     player.addEventListener('buffering', handleBuffering);
@@ -35,7 +39,7 @@ function Player({onBuffering, onPoint}) {
       Q: stats.streamBandwidth,
       W: Math.round(stats.estimatedBandwidth)
     });
-  }, 1000);
+  }, POLLING_INTERVAL);
 
   return (
     <div className="player" style={PLAYER_DIMENSIONS}>
