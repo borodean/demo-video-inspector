@@ -13,7 +13,7 @@ function Chart({points, regions}) {
     [points]
   );
 
-  if (!points.length) {
+  if (points.length < 2) {
     return null;
   }
 
