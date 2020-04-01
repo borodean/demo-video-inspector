@@ -3,7 +3,7 @@ import React, {useEffect, useRef} from 'react';
 import ShakaPlayer from 'shaka-player-react';
 
 import {PLAYER_DIMENSIONS, PLAYER_URL} from '../../config/constants';
-import useDriftlessInterval from '../../hooks/useDriftlessInterval';
+import useWorkerInterval from '../../hooks/useWorkerInterval';
 import {sumRanges} from '../../utils/data';
 
 function Player({onProgress}) {
@@ -14,7 +14,7 @@ function Player({onProgress}) {
     onProgressRef.current = onProgress;
   }, [onProgress]);
 
-  useDriftlessInterval(() => {
+  useWorkerInterval(() => {
     const {player} = controllerRef.current;
 
     const bufferedInfo = player.getBufferedInfo();
