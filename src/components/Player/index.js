@@ -1,4 +1,4 @@
-import {noop} from 'lodash';
+import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
 import ShakaPlayer from 'shaka-player-react';
 
@@ -6,7 +6,7 @@ import {PLAYER_DIMENSIONS, PLAYER_URL} from '../../config/constants';
 import useDriftlessInterval from '../../hooks/useDriftlessInterval';
 import {sumRanges} from '../../utils/data';
 
-function Player({onProgress = noop}) {
+function Player({onProgress}) {
   const controllerRef = useRef();
   const onProgressRef = useRef();
 
@@ -40,5 +40,9 @@ function Player({onProgress = noop}) {
     </div>
   );
 }
+
+Player.propTypes = {
+  onProgress: PropTypes.func.isRequired
+};
 
 export default Player;
