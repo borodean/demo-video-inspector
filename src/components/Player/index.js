@@ -4,6 +4,7 @@ import ShakaPlayer from 'shaka-player-react';
 
 import useDriftlessInterval from '../../hooks/useDriftlessInterval';
 import Record from '../../models/Record';
+import {sumRanges} from '../../utils/data';
 
 const DIMENSIONS = {width: 400, height: 320};
 
@@ -43,9 +44,7 @@ function Player({onRecord = noop}) {
     const bufferedInfo = player.getBufferedInfo();
     const {estimatedBandwidth} = player.getStats();
 
-    const bufferSize = bufferedInfo.total.reduce((sum, {end, start}) => {
-      return sum + end - start;
-    }, 0);
+    const bufferSize = sumRanges(bufferedInfo.total);
 
     onRecord(new Record('B', bufferSize));
     onRecord(new Record('W', estimatedBandwidth));
