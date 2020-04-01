@@ -13,6 +13,10 @@ function Chart({points, regions}) {
     [points]
   );
 
+  if (!points.length) {
+    return null;
+  }
+
   return (
     <div className="chart">
       <MonkeyPatchedC3Chart
