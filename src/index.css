@@ -22,6 +22,11 @@ html {
   flex-shrink: 0;
 }
 
+.buffering-legend {
+  display: block;
+  margin: auto;
+}
+
 .c3-target-B {
   stroke-dasharray: 5;
 }
