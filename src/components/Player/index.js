@@ -2,10 +2,9 @@ import {noop} from 'lodash';
 import React, {useEffect, useRef} from 'react';
 import ShakaPlayer from 'shaka-player-react';
 
+import {PLAYER_DIMENSIONS, PLAYER_URL} from '../../config/constants';
 import useDriftlessInterval from '../../hooks/useDriftlessInterval';
 import {sumRanges} from '../../utils/data';
-
-const DIMENSIONS = {width: 400, height: 320};
 
 function Player({onProgress = noop}) {
   const controllerRef = useRef();
@@ -31,12 +30,12 @@ function Player({onProgress = noop}) {
   }, 1000);
 
   return (
-    <div style={DIMENSIONS}>
+    <div className="player" style={PLAYER_DIMENSIONS}>
       <ShakaPlayer
         autoPlay
-        src="https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd"
+        src={PLAYER_URL}
         ref={controllerRef}
-        {...DIMENSIONS}
+        {...PLAYER_DIMENSIONS}
       />
     </div>
   );
