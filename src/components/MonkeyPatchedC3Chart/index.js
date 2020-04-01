@@ -4,6 +4,8 @@ import C3Chart from 'react-c3js';
 // https://github.com/bcbcarl/react-c3js/issues/18
 
 class MonkeyPatchedC3Chart extends C3Chart {
+  loadNewData() {}
+
   updateChart(config) {
     super.updateChart(config);
 
