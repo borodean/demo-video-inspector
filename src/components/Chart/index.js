@@ -4,35 +4,13 @@ import React, {useMemo} from 'react';
 import MonkeyPatchedC3Chart from '../MonkeyPatchedC3Chart';
 import {DEFAULT_C3_DATA_OPTIONS, DEFAULT_C3_OPTIONS} from './constants';
 
-function Chart({metrics}) {
+function Chart({points, regions}) {
   const data = useMemo(
     () => ({
       ...DEFAULT_C3_DATA_OPTIONS,
-      json: metrics
+      json: points
     }),
-    [metrics]
-  );
-
-  const regions = useMemo(
-    () =>
-      metrics.reduce((regions, metric, index, metrics) => {
-        const prevMetric = metrics[index - 1];
-        const wasBuffering = prevMetric && prevMetric.isBuffering;
-        const {createdAt, isBuffering} = metric;
-
-        if (isBuffering && !wasBuffering) {
-          regions.push({
-            start: createdAt
-          });
-        }
-
-        if (wasBuffering && !isBuffering) {
-          regions[regions.length - 1].end = createdAt;
-        }
-
-        return regions;
-      }, []),
-    [metrics]
+    [points]
   );
 
   return (
@@ -62,9 +40,9 @@ function Chart({metrics}) {
 }
 
 Chart.propTypes = {
-  metrics: PropTypes.arrayOf(
+  points: PropTypes.arrayOf(
     PropTypes.shape({
-      createdAt: PropTypes.instanceOf(Date).isRequired,
+      date: PropTypes.instanceOf(Date).isRequired,
       B: PropTypes.number.isRequired,
       Q: PropTypes.number.isRequired,
       W: PropTypes.number.isRequired

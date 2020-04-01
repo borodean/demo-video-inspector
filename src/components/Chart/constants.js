@@ -43,7 +43,7 @@ export const DEFAULT_C3_DATA_OPTIONS = {
     B: 'y2'
   },
   keys: {
-    x: 'createdAt',
+    x: 'date',
     value: ['B', 'Q', 'W']
   },
   names: {

@@ -6,13 +6,22 @@ import {PLAYER_DIMENSIONS, PLAYER_URL} from '../../config/constants';
 import useWorkerInterval from '../../hooks/useWorkerInterval';
 import {sumRanges} from '../../utils/data';
 
-function Player({onProgress}) {
+function Player({onBuffering, onPoint}) {
   const controllerRef = useRef();
-  const onProgressRef = useRef();
 
   useEffect(() => {
-    onProgressRef.current = onProgress;
-  }, [onProgress]);
+    const {player} = controllerRef.current;
+
+    const handleBuffering = event => {
+      onBuffering({ date: new Date(), isBuffering: event.buffering });
+    };
+
+    player.addEventListener('buffering', handleBuffering);
+
+    return () => {
+      player.removeEventListener('buffering', handleBuffering);
+    };
+  }, [onBuffering]);
 
   useWorkerInterval(() => {
     const {player} = controllerRef.current;
@@ -20,9 +29,8 @@ function Player({onProgress}) {
     const bufferedInfo = player.getBufferedInfo();
     const stats = player.getStats();
 
-    onProgress({
-      createdAt: new Date(),
-      isBuffering: player.isBuffering(),
+    onPoint({
+      date: new Date(),
       B: sumRanges(bufferedInfo.total),
       Q: stats.streamBandwidth,
       W: Math.round(stats.estimatedBandwidth)
@@ -42,7 +50,8 @@ function Player({onProgress}) {
 }
 
 Player.propTypes = {
-  onProgress: PropTypes.func.isRequired
+  onBuffering: PropTypes.func.isRequired,
+  onPoint: PropTypes.func.isRequired
 };
 
 export default Player;
