@@ -1,4 +1,6 @@
 @import '~normalize.css';
+
+@import '~c3/c3.css';
 @import '~shaka-player/dist/controls.css';
 
 *,
@@ -9,4 +11,17 @@
 
 html {
   font: 16px/1.25 sans-serif;
+}
+
+.app {
+  display: flex;
+}
+
+.player,
+.chart {
+  flex-shrink: 0;
+}
+
+.c3-target-B {
+  stroke-dasharray: 5;
 }

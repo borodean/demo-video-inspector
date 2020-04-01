@@ -25,7 +25,7 @@ function Player({onProgress = noop}) {
       isBuffering: player.isBuffering(),
       B: sumRanges(bufferedInfo.total),
       Q: stats.streamBandwidth,
-      W: stats.estimatedBandwidth
+      W: Math.round(stats.estimatedBandwidth)
     });
   }, 1000);
 

@@ -11,11 +11,9 @@ import * as serviceWorker from './serviceWorker';
 const store = configureStore();
 
 const Root = () => (
-  <React.StrictMode>
-    <ReduxProvider store={store}>
-      <App />
-    </ReduxProvider>
-  </React.StrictMode>
+  <ReduxProvider store={store}>
+    <App />
+  </ReduxProvider>
 );
 
 ReactDOM.render(<Root />, document.getElementById('root'));
