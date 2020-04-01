@@ -51,6 +51,12 @@ Chart.propTypes = {
       Q: PropTypes.number.isRequired,
       W: PropTypes.number.isRequired
     })
+  ).isRequired,
+  regions: PropTypes.arrayOf(
+    PropTypes.shape({
+      start: PropTypes.instanceOf(Date).isRequired,
+      end: PropTypes.instanceOf(Date)
+    })
   ).isRequired
 };
 
